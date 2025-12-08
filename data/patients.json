@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "fullname": "Karim Baghouri",
+    "gender": "Homme",
+    "age": 34,
+    "phone": "0611122233",
+    "email": "karim.baghou@patient.com",
+    "address": "Casablanca",
+    "sicknessHistory": "Hypertension"
+  },
+  {
+    "id": 2,
+    "fullname": "Mouna Idrissi",
+    "gender": "Femme",
+    "age": 28,
+    "phone": "0622233344",
+    "email": "mouna.idrissi@patient.com",
+    "address": "Rabat",
+    "sicknessHistory": "Allergies chroniques"
+  },
+  {
+    "id": 3,
+    "fullname": "Hassan El Jaziri",
+    "gender": "Homme",
+    "age": 45,
+    "phone": "0633344455",
+    "email": "hassan.jaziri@patient.com",
+    "address": "Fès",
+    "sicknessHistory": "Diabète"
+  },
+  {
+    "id": 4,
+    "fullname": "Samira Choukrani",
+    "gender": "Femme",
+    "age": 52,
+    "phone": "0644455566",
+    "email": "samira.choukrani@patient.com",
+    "address": "Marrakech",
+    "sicknessHistory": "Asthme"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "patientId": 1,
+    "doctorId": 1,
+    "serviceId": 1,
+    "date": "2025-02-12",
+    "hour": "10:00",
+    "status": "pending"
+  },
+  {
+    "id": 2,
+    "patientId": 2,
+    "doctorId": 2,
+    "serviceId": 2,
+    "date": "2025-02-14",
+    "hour": "14:30",
+    "status": "done"
+  },
+  {
+    "id": 3,
+    "patientId": 3,
+    "doctorId": 3,
+    "serviceId": 3,
+    "date": "2025-02-10",
+    "hour": "09:15",
+    "status": "canceled"
+  },
+  {
+    "id": 4,
+    "patientId": 4,
+    "doctorId": 4,
+    "serviceId": 4,
+    "date": "2025-02-18",
+    "hour": "11:45",
+    "status": "pending"
+  }
+]

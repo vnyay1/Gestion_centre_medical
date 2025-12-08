@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "fullname": "Dr. Ahmed El Mansouri",
+    "speciality": "Cardiologie",
+    "phone": "0612345678",
+    "email": "ahmed.mansouri@clinic.com",
+    "availability": true,
+    "photo": "doctor1.jpg"
+  },
+  {
+    "id": 2,
+    "fullname": "Dr. Sara Benali",
+    "speciality": "Dermatologie",
+    "phone": "0678543210",
+    "email": "sara.benali@clinic.com",
+    "availability": true,
+    "photo": "doctor2.jpg"
+  },
+  {
+    "id": 3,
+    "fullname": "Dr. Youssef Hamdani",
+    "speciality": "Pédiatrie",
+    "phone": "0623456789",
+    "email": "youssef.hamdani@clinic.com",
+    "availability": false,
+    "photo": "doctor3.jpg"
+  },
+  {
+    "id": 4,
+    "fullname": "Dr. Leila Ouazzani",
+    "speciality": "Radiologie",
+    "phone": "0645789654",
+    "email": "leila.ouazzani@clinic.com",
+    "availability": true,
+    "photo": "doctor4.jpg"
+  }
+]

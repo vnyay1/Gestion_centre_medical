@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Cardiologie",
+    "description": "Traitement du cœur et système cardiovasculaire",
+    "price": 300
+  },
+  {
+    "id": 2,
+    "name": "Dermatologie",
+    "description": "Soins de la peau et maladies dermatologiques",
+    "price": 200
+  },
+  {
+    "id": 3,
+    "name": "Pédiatrie",
+    "description": "Suivi médical des enfants",
+    "price": 150
+  },
+  {
+    "id": 4,
+    "name": "Radiologie",
+    "description": "Imagerie médicale, échographie, scanner",
+    "price": 400
+  }
+]

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard – Medical Center</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            background: #f0f2f5;
+        }
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+            background: #fff;
+            border-right: 1px solid #ddd;
+            position: fixed;
+            top: 0; left: 0;
+            padding: 20px;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .kpi-card {
+            border-radius: 10px;
+            padding: 20px;
+            background: white;
+            border: 1px solid #eee;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h4 class="text-center mb-4">Centre Médical</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link">📊 Dashboard</a></li>
+            <li class="nav-item"><a href="doctors/list.html" class="nav-link">👨‍⚕️ Médecins</a></li>
+            <li class="nav-item"><a href="patients/list.html" class="nav-link">🧑‍🦱 Patients</a></li>
+            <li class="nav-item"><a href="services/list.html" class="nav-link">🏥 Services</a></li>
+            <li class="nav-item"><a href="appointments/list.html" class="nav-link">📅 Rendez-vous</a></li>
+            <li class="nav-item"><a href="consultations/list.html" class="nav-link">📋 Consultations</a></li>
+            <li class="nav-item"><a href="#" id="logoutBtn" class="nav-link text-danger">🚪 Déconnexion</a></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content">
+        <h2 class="mb-4">Dashboard</h2>
+
+        <!-- KPIs -->
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="kpi-card">
+                    <h5>Total Patients</h5>
+                    <h2 id="kpiPatients">0</h2>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="kpi-card">
+                    <h5>Total Médecins</h5>
+                    <h2 id="kpiDoctors">0</h2>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="kpi-card">
+                    <h5>Rendez-vous (Mois)</h5>
+                    <h2 id="kpiAppointments">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRAPHIQUES -->
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h5>Rendez-vous par statut</h5>
+                    <canvas id="chartStatus"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="p-3 bg-white rounded shadow-sm">
+                    <h5>Spécialités des médecins</h5>
+                    <canvas id="chartDoctors"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- dashboard.js -->
+    <script src="assets/js/dashboard.js"></script>
+
+    <!-- auth.js (contrôle session) -->
+    <script src="assets/js/auth.js"></script>
+
+</body>
+</html>

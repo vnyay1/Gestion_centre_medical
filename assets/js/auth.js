@@ -18,6 +18,15 @@ const users = [
     }
 ];
 
+/* ============================================================
+   FONCTION HELPER : Vérifier si l'utilisateur est admin
+============================================================ */
+function isAdmin() {
+    const sessionUser = localStorage.getItem("sessionUser");
+    if (!sessionUser) return false;
+    const user = JSON.parse(sessionUser);
+    return user.role === "admin";
+}
 
 /* ============================================================
    FONCTION : Redirection si déjà connecté (pour login.html)

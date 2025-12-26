@@ -15,7 +15,12 @@ function getRendezvous() {
 function saveRendezvous(data) {
     localStorage.setItem("appointments", JSON.stringify(data));
 }
-
+function isAdmin() {
+    const sessionUser = localStorage.getItem("sessionUser");
+    if (!sessionUser) return false;
+    const user = JSON.parse(sessionUser);
+    return user.role === "admin";
+}
 /* -----------------------------------------------------------
    LIST PAGE
 ----------------------------------------------------------- */
@@ -24,12 +29,19 @@ if (window.location.pathname.includes("appointments") &&
 
     const tbody = document.getElementById("rendezvousTableBody");
     const searchInput = document.getElementById("searchInput");
+    const addButton = document.querySelector('a[href="create.html"]');
+    
+    // Masquer le bouton Ajouter si l'utilisateur n'est pas admin
+    if (addButton && !isAdmin()) {
+        addButton.style.display = "none";
+    }
 
     function displayRendezVous() {
         const rdvs = getRendezvous();
         const patients = getPatients();
         const doctors = getDoctors();
         const searchValue = searchInput.value.toLowerCase();
+        const userIsAdmin = isAdmin();
 
         tbody.innerHTML = "";
 
@@ -41,6 +53,12 @@ if (window.location.pathname.includes("appointments") &&
             .forEach(r => {
                 const patient = patients.find(p => p.id === r.patientId);
                 const doctor = doctors.find(d => d.id === r.doctorId);
+                
+                const actionButtons = userIsAdmin 
+                    ? `<a href="details.html?id=${r.id}" class="btn btn-sm btn-info">Voir</a>
+                       <a href="edit.html?id=${r.id}" class="btn btn-sm btn-warning">Modifier</a>
+                       <button class="btn btn-sm btn-danger" onclick="deleteRDV(${r.id})">Supprimer</button>`
+                    : `<a href="details.html?id=${r.id}" class="btn btn-sm btn-info">Voir</a>`;
 
                 tbody.innerHTML += `
                     <tr>
@@ -50,9 +68,7 @@ if (window.location.pathname.includes("appointments") &&
                         <td>${r.hour}</td>
                         <td>${r.status}</td>
                         <td>
-                            <a href="details.html?id=${r.id}" class="btn btn-sm btn-info">Voir</a>
-                            <a href="edit.html?id=${r.id}" class="btn btn-sm btn-warning">Modifier</a>
-                            <button class="btn btn-sm btn-danger" onclick="deleteRDV(${r.id})">Supprimer</button>
+                            ${actionButtons}
                         </td>
                     </tr>
                 `;
@@ -62,6 +78,10 @@ if (window.location.pathname.includes("appointments") &&
     searchInput.addEventListener("input", displayRendezVous);
 
     window.deleteRDV = function (id) {
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour supprimer un rendez-vous.");
+            return;
+        }
         if (confirm("Voulez-vous vraiment supprimer ce rendez-vous ?")) {
             saveRendezvous(getRendezvous().filter(r => r.id !== id));
             displayRendezVous();
@@ -77,6 +97,12 @@ if (window.location.pathname.includes("appointments") &&
 if (window.location.pathname.includes("appointments") &&
     window.location.pathname.includes("create.html")) {
 
+    // Rediriger si l'utilisateur n'est pas admin
+    if (!isAdmin()) {
+        alert("Vous n'avez pas les permissions pour créer un rendez-vous.");
+        window.location.href = "list.html";
+    }
+
     const patientSelect = document.getElementById("patient");
     const doctorSelect = document.getElementById("doctor");
 
@@ -90,6 +116,11 @@ if (window.location.pathname.includes("appointments") &&
 
     document.getElementById("rendezvousForm").addEventListener("submit", e => {
         e.preventDefault();
+
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour créer un rendez-vous.");
+            return;
+        }
 
         const rdvs = getRendezvous();
 
@@ -116,6 +147,12 @@ if (window.location.pathname.includes("appointments") &&
 if (window.location.pathname.includes("appointments") &&
     window.location.pathname.includes("edit.html")) {
 
+    // Rediriger si l'utilisateur n'est pas admin
+    if (!isAdmin()) {
+        alert("Vous n'avez pas les permissions pour modifier un rendez-vous.");
+        window.location.href = "list.html";
+    }
+
     const params = new URLSearchParams(window.location.search);
     const id = Number(params.get("id"));
 
@@ -141,6 +178,11 @@ if (window.location.pathname.includes("appointments") &&
 
     document.getElementById("editRendezvousForm").addEventListener("submit", e => {
         e.preventDefault();
+
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour modifier un rendez-vous.");
+            return;
+        }
 
         rdv.patientId = Number(patientSelect.value);
         rdv.doctorId = Number(doctorSelect.value);

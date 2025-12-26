@@ -9,7 +9,12 @@ function getDoctors() {
 function saveDoctors(data) {
     localStorage.setItem("doctors", JSON.stringify(data));
 }
-
+function isAdmin() {
+    const sessionUser = localStorage.getItem("sessionUser");
+    if (!sessionUser) return false;
+    const user = JSON.parse(sessionUser);
+    return user.role === "admin";
+}
 /* ------------------------
    LIST PAGE (list.html)
 ------------------------ */
@@ -17,10 +22,17 @@ if (window.location.pathname.includes("list.html")) {
 
     const tbody = document.getElementById("doctorsTableBody");
     const searchInput = document.getElementById("searchInput");
+    const addButton = document.querySelector('a[href="create.html"]');
+    
+    // Masquer le bouton Ajouter si l'utilisateur n'est pas admin
+    if (addButton && !isAdmin()) {
+        addButton.style.display = "none";
+    }
 
     function displayDoctors() {
         const doctors = getDoctors();
         const searchValue = searchInput.value.toLowerCase();
+        const userIsAdmin = isAdmin();
 
         tbody.innerHTML = "";
 
@@ -30,6 +42,12 @@ if (window.location.pathname.includes("list.html")) {
                 d.speciality.toLowerCase().includes(searchValue)
             )
             .forEach(d => {
+                const actionButtons = userIsAdmin 
+                    ? `<a href="details.html?id=${d.id}" class="btn btn-sm btn-info">Voir</a>
+                       <a href="edit.html?id=${d.id}" class="btn btn-sm btn-warning">Modifier</a>
+                       <button class="btn btn-sm btn-danger" onclick="deleteDoctor(${d.id})">Supprimer</button>`
+                    : `<a href="details.html?id=${d.id}" class="btn btn-sm btn-info">Voir</a>`;
+                
                 tbody.innerHTML += `
                     <tr>
                         <td>${d.fullname}</td>
@@ -38,9 +56,7 @@ if (window.location.pathname.includes("list.html")) {
                         <td>${d.email}</td>
                         <td>${d.availability ? "Oui" : "Non"}</td>
                         <td>
-                            <a href="details.html?id=${d.id}" class="btn btn-sm btn-info">Voir</a>
-                            <a href="edit.html?id=${d.id}" class="btn btn-sm btn-warning">Modifier</a>
-                            <button class="btn btn-sm btn-danger" onclick="deleteDoctor(${d.id})">Supprimer</button>
+                            ${actionButtons}
                         </td>
                     </tr>
                 `;
@@ -50,6 +66,10 @@ if (window.location.pathname.includes("list.html")) {
     searchInput.addEventListener("input", displayDoctors);
 
     window.deleteDoctor = function (id) {
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour supprimer un médecin.");
+            return;
+        }
         if (confirm("Voulez-vous vraiment supprimer ce médecin ?")) {
             const doctors = getDoctors().filter(d => d.id !== id);
             saveDoctors(doctors);
@@ -65,8 +85,19 @@ if (window.location.pathname.includes("list.html")) {
 ------------------------ */
 if (window.location.pathname.includes("create.html")) {
 
+    // Rediriger si l'utilisateur n'est pas admin
+    if (!isAdmin()) {
+        alert("Vous n'avez pas les permissions pour créer un médecin.");
+        window.location.href = "list.html";
+    }
+
     document.getElementById("doctorForm").addEventListener("submit", e => {
         e.preventDefault();
+
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour créer un médecin.");
+            return;
+        }
 
         const doctors = getDoctors();
 
@@ -92,6 +123,12 @@ if (window.location.pathname.includes("create.html")) {
 ------------------------ */
 if (window.location.pathname.includes("edit.html")) {
 
+    // Rediriger si l'utilisateur n'est pas admin
+    if (!isAdmin()) {
+        alert("Vous n'avez pas les permissions pour modifier un médecin.");
+        window.location.href = "list.html";
+    }
+
     const params = new URLSearchParams(window.location.search);
     const id = Number(params.get("id"));
 
@@ -106,6 +143,11 @@ if (window.location.pathname.includes("edit.html")) {
 
     document.getElementById("editDoctorForm").addEventListener("submit", (e) => {
         e.preventDefault();
+
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour modifier un médecin.");
+            return;
+        }
 
         doctor.fullname = document.getElementById("fullname").value;
         doctor.speciality = document.getElementById("speciality").value;

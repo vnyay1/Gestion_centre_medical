@@ -9,7 +9,12 @@ function getPatients() {
 function savePatients(data) {
     localStorage.setItem("patients", JSON.stringify(data));
 }
-
+function isAdmin() {
+    const sessionUser = localStorage.getItem("sessionUser");
+    if (!sessionUser) return false;
+    const user = JSON.parse(sessionUser);
+    return user.role === "admin";
+}
 /* ---------------------------
    LIST PAGE (list.html)
 --------------------------- */
@@ -18,10 +23,17 @@ if (window.location.pathname.includes("list.html") &&
 
     const tbody = document.getElementById("patientsTableBody");
     const searchInput = document.getElementById("searchInput");
+    const addButton = document.querySelector('a[href="create.html"]');
+    
+    // Masquer le bouton Ajouter si l'utilisateur n'est pas admin
+    if (addButton && !isAdmin()) {
+        addButton.style.display = "none";
+    }
 
     function displayPatients() {
         const patients = getPatients();
         const searchValue = searchInput.value.toLowerCase();
+        const userIsAdmin = isAdmin();
 
         tbody.innerHTML = "";
 
@@ -32,6 +44,12 @@ if (window.location.pathname.includes("list.html") &&
                 p.phone.includes(searchValue)
             )
             .forEach(p => {
+                const actionButtons = userIsAdmin 
+                    ? `<a href="details.html?id=${p.id}" class="btn btn-sm btn-info">Voir</a>
+                       <a href="edit.html?id=${p.id}" class="btn btn-sm btn-warning">Modifier</a>
+                       <button class="btn btn-sm btn-danger" onclick="deletePatient(${p.id})">Supprimer</button>`
+                    : `<a href="details.html?id=${p.id}" class="btn btn-sm btn-info">Voir</a>`;
+                
                 tbody.innerHTML += `
                     <tr>
                         <td>${p.fullname}</td>
@@ -40,9 +58,7 @@ if (window.location.pathname.includes("list.html") &&
                         <td>${p.phone}</td>
                         <td>${p.email}</td>
                         <td>
-                            <a href="details.html?id=${p.id}" class="btn btn-sm btn-info">Voir</a>
-                            <a href="edit.html?id=${p.id}" class="btn btn-sm btn-warning">Modifier</a>
-                            <button class="btn btn-sm btn-danger" onclick="deletePatient(${p.id})">Supprimer</button>
+                            ${actionButtons}
                         </td>
                     </tr>
                 `;
@@ -52,6 +68,10 @@ if (window.location.pathname.includes("list.html") &&
     searchInput.addEventListener("input", displayPatients);
 
     window.deletePatient = function (id) {
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour supprimer un patient.");
+            return;
+        }
         if (confirm("Voulez-vous supprimer ce patient ?")) {
             const updated = getPatients().filter(p => p.id !== id);
             savePatients(updated);
@@ -68,8 +88,19 @@ if (window.location.pathname.includes("list.html") &&
 if (window.location.pathname.includes("create.html") &&
     window.location.pathname.includes("patients")) {
 
+    // Rediriger si l'utilisateur n'est pas admin
+    if (!isAdmin()) {
+        alert("Vous n'avez pas les permissions pour créer un patient.");
+        window.location.href = "list.html";
+    }
+
     document.getElementById("patientForm").addEventListener("submit", e => {
         e.preventDefault();
+
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour créer un patient.");
+            return;
+        }
 
         const patients = getPatients();
 
@@ -98,6 +129,12 @@ if (window.location.pathname.includes("create.html") &&
 if (window.location.pathname.includes("edit.html") &&
     window.location.pathname.includes("patients")) {
 
+    // Rediriger si l'utilisateur n'est pas admin
+    if (!isAdmin()) {
+        alert("Vous n'avez pas les permissions pour modifier un patient.");
+        window.location.href = "list.html";
+    }
+
     const params = new URLSearchParams(window.location.search);
     const id = Number(params.get("id"));
 
@@ -115,6 +152,11 @@ if (window.location.pathname.includes("edit.html") &&
 
     document.getElementById("editPatientForm").addEventListener("submit", (e) => {
         e.preventDefault();
+
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour modifier un patient.");
+            return;
+        }
 
         patient.fullname = document.getElementById("fullname").value;
         patient.age = Number(document.getElementById("age").value);

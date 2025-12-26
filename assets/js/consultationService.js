@@ -15,7 +15,12 @@ function getConsultations() {
 function saveConsultations(data) {
     localStorage.setItem("consultations", JSON.stringify(data));
 }
-
+function isAdmin() {
+    const sessionUser = localStorage.getItem("sessionUser");
+    if (!sessionUser) return false;
+    const user = JSON.parse(sessionUser);
+    return user.role === "admin";
+}
 /* -----------------------------------------------------------
    LIST PAGE (consultations/list.html)
 ----------------------------------------------------------- */
@@ -24,12 +29,19 @@ if (window.location.pathname.includes("consultations") &&
 
     const tbody = document.getElementById("consultationsTableBody");
     const searchInput = document.getElementById("searchInput");
+    const addButton = document.querySelector('a[href="create.html"]');
+    
+    // Masquer le bouton Ajouter si l'utilisateur n'est pas admin
+    if (addButton && !isAdmin()) {
+        addButton.style.display = "none";
+    }
 
     function displayConsultations() {
         const consultations = getConsultations();
         const patients = getPatients();
         const doctors = getDoctors();
         const searchValue = searchInput.value.toLowerCase();
+        const userIsAdmin = isAdmin();
 
         tbody.innerHTML = "";
 
@@ -40,6 +52,12 @@ if (window.location.pathname.includes("consultations") &&
             .forEach(c => {
                 const patient = patients.find(p => p.id === c.patientId);
                 const doctor = doctors.find(d => d.id === c.doctorId);
+                
+                const actionButtons = userIsAdmin 
+                    ? `<a href="details.html?id=${c.id}" class="btn btn-sm btn-info">Voir</a>
+                       <a href="edit.html?id=${c.id}" class="btn btn-sm btn-warning">Modifier</a>
+                       <button class="btn btn-sm btn-danger" onclick="deleteConsultation(${c.id})">Supprimer</button>`
+                    : `<a href="details.html?id=${c.id}" class="btn btn-sm btn-info">Voir</a>`;
 
                 tbody.innerHTML += `
                     <tr>
@@ -48,9 +66,7 @@ if (window.location.pathname.includes("consultations") &&
                         <td>${c.date}</td>
                         <td>${c.diagnosis}</td>
                         <td>
-                            <a href="details.html?id=${c.id}" class="btn btn-sm btn-info">Voir</a>
-                            <a href="edit.html?id=${c.id}" class="btn btn-sm btn-warning">Modifier</a>
-                            <button class="btn btn-sm btn-danger" onclick="deleteConsultation(${c.id})">Supprimer</button>
+                            ${actionButtons}
                         </td>
                     </tr>
                 `;
@@ -60,6 +76,10 @@ if (window.location.pathname.includes("consultations") &&
     searchInput.addEventListener("input", displayConsultations);
 
     window.deleteConsultation = function (id) {
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour supprimer une consultation.");
+            return;
+        }
         if (confirm("Voulez-vous supprimer cette consultation ?")) {
             const updated = getConsultations().filter(c => c.id !== id);
             saveConsultations(updated);
@@ -76,6 +96,12 @@ if (window.location.pathname.includes("consultations") &&
 if (window.location.pathname.includes("consultations") &&
     window.location.pathname.includes("create.html")) {
 
+    // Rediriger si l'utilisateur n'est pas admin
+    if (!isAdmin()) {
+        alert("Vous n'avez pas les permissions pour créer une consultation.");
+        window.location.href = "list.html";
+    }
+
     // Remplir select patients & doctors
     const patientSelect = document.getElementById("patient");
     const doctorSelect = document.getElementById("doctor");
@@ -90,6 +116,11 @@ if (window.location.pathname.includes("consultations") &&
 
     document.getElementById("consultationForm").addEventListener("submit", e => {
         e.preventDefault();
+
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour créer une consultation.");
+            return;
+        }
 
         const consultations = getConsultations();
 
@@ -115,6 +146,12 @@ if (window.location.pathname.includes("consultations") &&
 ----------------------------------------------------------- */
 if (window.location.pathname.includes("consultations") &&
     window.location.pathname.includes("edit.html")) {
+
+    // Rediriger si l'utilisateur n'est pas admin
+    if (!isAdmin()) {
+        alert("Vous n'avez pas les permissions pour modifier une consultation.");
+        window.location.href = "list.html";
+    }
 
     const params = new URLSearchParams(window.location.search);
     const id = Number(params.get("id"));
@@ -142,6 +179,11 @@ if (window.location.pathname.includes("consultations") &&
 
     document.getElementById("editConsultationForm").addEventListener("submit", (e) => {
         e.preventDefault();
+
+        if (!isAdmin()) {
+            alert("Vous n'avez pas les permissions pour modifier une consultation.");
+            return;
+        }
 
         consultation.patientId = Number(patientSelect.value);
         consultation.doctorId = Number(doctorSelect.value);

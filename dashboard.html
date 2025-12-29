@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard – Medical Center</title>
+    <title>Medical Center</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Translation service -->
+    <script src="assets/js/translations.js" defer></script>
 
     <style>
         body {
@@ -44,41 +47,52 @@
     <div class="sidebar">
         <a href="index.html"><img src="assets/icons/logo.png" alt="Logo Bibliothèque" 
         class="img-fluid mx-auto d-block mb-3" style="width: 130px;"></a>
-        <h4 class="text-center mb-4">Centre Médical</h4>
+        <h4 class="text-center mb-4" data-i18n="medicalCenter">Centre Médical</h4>
+        
+        <!-- Sélecteur de langue -->
+        <div class="mb-4">
+            <label class="form-label small" data-i18n="language">Langue</label>
+            <select id="langSelect" class="form-select form-select-sm">
+                <option value="fr" selected>Français</option>
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
+            </select>
+        </div>
+        
         <ul class="nav flex-column">
-            <li class="nav-item"><a href="dashboard.html" class="nav-link">📊 Dashboard</a></li>
-            <li class="nav-item"><a href="doctors/list.html" class="nav-link">👨‍⚕️ Médecins</a></li>
-            <li class="nav-item"><a href="patients/list.html" class="nav-link">🧑‍🦱 Patients</a></li>
-            <li class="nav-item"><a href="services/list.html" class="nav-link">🏥 Services</a></li>
-            <li class="nav-item"><a href="appointments/list.html" class="nav-link">📅 Rendez-vous</a></li>
-            <li class="nav-item"><a href="consultations/list.html" class="nav-link">📋 Consultations</a></li>
-            <li class="nav-item"><a href="#" id="logoutBtn" class="nav-link text-danger">🚪 Déconnexion</a></li>
+            <li class="nav-item"><a href="dashboard.html" class="nav-link" data-i18n="dashboard">📊 Dashboard</a></li>
+            <li class="nav-item"><a href="doctors/list.html" class="nav-link" data-i18n="doctors">👨‍⚕️ Médecins</a></li>
+            <li class="nav-item"><a href="patients/list.html" class="nav-link" data-i18n="patients">🧑‍🦱 Patients</a></li>
+            <li class="nav-item"><a href="services/list.html" class="nav-link" data-i18n="services">🏥 Services</a></li>
+            <li class="nav-item"><a href="appointments/list.html" class="nav-link" data-i18n="appointments">📅 Rendez-vous</a></li>
+            <li class="nav-item"><a href="consultations/list.html" class="nav-link" data-i18n="consultations">📋 Consultations</a></li>
+            <li class="nav-item"><a href="#" id="logoutBtn" class="nav-link text-danger" data-i18n="logout">🚪 Déconnexion</a></li>
         </ul>
     </div>
 
     <!-- MAIN CONTENT -->
     <div class="content">
-        <h2 class="mb-4">Dashboard</h2>
+        <h2 class="mb-4" data-i18n="dashboardTitle">Dashboard</h2>
 
         <!-- KPIs -->
         <div class="row mb-4">
             <div class="col-md-4 mb-3">
                 <div class="kpi-card">
-                    <h5>Total Patients</h5>
+                    <h5 data-i18n="totalPatients">Total Patients</h5>
                     <h2 id="kpiPatients">0</h2>
                 </div>
             </div>
 
             <div class="col-md-4 mb-3">
                 <div class="kpi-card">
-                    <h5>Total Médecins</h5>
+                    <h5 data-i18n="totalDoctors">Total Médecins</h5>
                     <h2 id="kpiDoctors">0</h2>
                 </div>
             </div>
 
             <div class="col-md-4 mb-3">
                 <div class="kpi-card">
-                    <h5>Rendez-vous (Mois)</h5>
+                    <h5 data-i18n="appointmentsMonth">Rendez-vous (Mois)</h5>
                     <h2 id="kpiAppointments">0</h2>
                 </div>
             </div>
@@ -88,14 +102,14 @@
         <div class="row">
             <div class="col-md-6 mb-4">
                 <div class="p-3 bg-white rounded shadow-sm">
-                    <h5>Rendez-vous par statut</h5>
+                    <h5 data-i18n="appointmentsByStatus">Rendez-vous par statut</h5>
                     <canvas id="chartStatus"></canvas>
                 </div>
             </div>
 
             <div class="col-md-6 mb-4">
                 <div class="p-3 bg-white rounded shadow-sm">
-                    <h5>Spécialités des médecins</h5>
+                    <h5 data-i18n="doctorSpecialties">Spécialités des médecins</h5>
                     <canvas id="chartDoctors"></canvas>
                 </div>
             </div>

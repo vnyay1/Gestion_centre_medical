@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion – Medical Center</title>
+    <title>Medical Center</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+     <!-- Translation service -->
+    <script src="assets/js/translations.js" defer></script>
      <!-- Script auth.js (vous l’ajouterez plus tard) -->
     <script src="assets/js/auth.js" defer></script>
 
@@ -28,13 +30,14 @@
 <body>
 
     <div class="login-card">
-        <h3 class="text-center mb-4">Centre Médical – Connexion</h3>
+        <h3 class="text-center mb-4" data-i18n="loginTitle">Centre Médical – Connexion</h3>
 
         <a href="index.html"><img src="assets/icons/logo.png" alt="Logo Bibliothèque" 
              class="img-fluid mx-auto d-block mb-3" style="width: 130px;"></a>
 
         <!-- Sélecteur de langue -->
         <div class="mb-3 text-center">
+            <label class="form-label" data-i18n="language">Langue</label>
             <select id="langSelect" class="form-select">
                 <option value="fr" selected>Français</option>
                 <option value="en">English</option>
@@ -44,21 +47,22 @@
 
         <form id="loginForm">
             <div class="mb-3">
-                <label class="form-label" id="labelEmail">Email</label>
-                <input type="email" id="email" class="form-control" placeholder="admin@app.com" required>
-                <div class="invalid-feedback" id="errorEmail">Email invalide</div>
+                <label class="form-label" data-i18n="email">Email</label>
+                <input type="email" id="email" class="form-control" data-i18n-placeholder="email" placeholder="admin@app.com" required>
+                <div class="invalid-feedback" id="errorEmail" data-i18n="invalidEmail">Email invalide</div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" id="labelPassword">Mot de passe</label>
-                <input type="password" id="password" class="form-control" placeholder="Mot de passe" required>
-                <div class="invalid-feedback" id="errorPassword">Mot de passe requis</div>
+                <label class="form-label" data-i18n="password">Mot de passe</label>
+                <input type="password" id="password" class="form-control" data-i18n-placeholder="password" placeholder="Mot de passe" required>
+                <div class="invalid-feedback" id="errorPassword" data-i18n="passwordRequired">Mot de passe requis</div>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+            <button type="submit" class="btn btn-primary w-100" data-i18n="login">Se connecter</button>
         </form>
 
         <p class="text-center mt-3">
+            <small data-i18n="credentials">Identifiants de test</small><br>
             <small>admin@app.com / admin123</small><br>
             <small>user@app.com / user123</small>
         </p>
